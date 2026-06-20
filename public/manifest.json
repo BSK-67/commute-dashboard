@@ -1,0 +1,22 @@
+{
+  "name": "출근 경로 대시보드",
+  "short_name": "출근경로",
+  "description": "실시간 버스·지하철 환승 경로 안내",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1a73e8",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
