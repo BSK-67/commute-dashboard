@@ -1,7 +1,3 @@
 {
-  "version": 2,
-  "rewrites": [
-    { "source": "/api/dashboard", "destination": "/api/dashboard.py" },
-    { "source": "/(.*)", "destination": "/public/$1" }
-  ]
+  "outputDirectory": "public"
 }
