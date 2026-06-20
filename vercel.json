@@ -1,10 +1,7 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "api/dashboard.py", "use": "@vercel/python" }
-  ],
-  "routes": [
-    { "src": "/api/dashboard", "dest": "api/dashboard.py" },
-    { "src": "/(.*)", "dest": "public/$1" }
+  "rewrites": [
+    { "source": "/api/dashboard", "destination": "/api/dashboard.py" },
+    { "source": "/(.*)", "destination": "/public/$1" }
   ]
 }
