@@ -1,0 +1,15 @@
+{
+  "name": "출근 경로 안내",
+  "short_name": "출근경로",
+  "description": "도착 목표 시각 기반 대중교통 역산 경로 안내",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f5f3",
+  "theme_color": "#185FA5",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
