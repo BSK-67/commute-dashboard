@@ -1,6 +1,3 @@
 {
-  "outputDirectory": "public",
-  "functions": {
-    "api/route.js": { "runtime": "edge" }
-  }
+  "outputDirectory": "public"
 }
