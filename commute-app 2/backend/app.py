@@ -48,9 +48,12 @@ def icons(filename):
 # ── ODsay: 역명 → 좌표 ─────────────────────────────────────
 def search_station(keyword: str) -> dict | None:
     url = "https://api.odsay.com/v1/api/searchStation"
-    params = {"apiKey": ODSAY_API_KEY, "stationName": keyword, "stationClass": 2, "lang": 0}
+    import urllib.parse
+    encoded_key = urllib.parse.quote(ODSAY_API_KEY, safe="")
+    full_url = f"{url}?apiKey={encoded_key}&stationName={urllib.parse.quote(keyword)}&stationClass=2&lang=0"
     try:
-        data = requests.get(url, params=params, timeout=5).json()
+        data = requests.get(full_url, timeout=5).json()
+        print(f"[search_station] response: {data}")
         s = data["result"]["station"][0]
         return {"x": s["x"], "y": s["y"], "name": s["stationName"]}
     except Exception as e:
@@ -60,12 +63,12 @@ def search_station(keyword: str) -> dict | None:
 # ── ODsay: 경로 탐색 ────────────────────────────────────────
 def get_odsay_route(sx, sy, ex, ey) -> dict | None:
     url = "https://api.odsay.com/v1/api/searchPubTransPathT"
-    params = {"apiKey": ODSAY_API_KEY, "SX": sx, "SY": sy,
-              "EX": ex, "EY": ey, "SearchType": 0, "lang": 0}
+    import urllib.parse
+    encoded_key = urllib.parse.quote(ODSAY_API_KEY, safe="")
+    full_url = f"{url}?apiKey={encoded_key}&SX={sx}&SY={sy}&EX={ex}&EY={ey}&SearchType=0&lang=0"
     try:
-        data = requests.get(url, params=params, timeout=10).json()
-        paths = data["result"]["path"]
-        return sorted(paths, key=lambda p: p["info"]["totalTime"])[0]
+        data = requests.get(full_url, timeout=10).json()
+        print(f"[get_odsay_route] response: {data}")
     except Exception as e:
         print(f"[get_odsay_route] {e}")
         return None
