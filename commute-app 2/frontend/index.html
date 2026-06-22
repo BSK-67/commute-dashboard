@@ -130,7 +130,7 @@
       <div class="field-label">출발지</div>
       <div class="input-wrap">
         <i class="ti ti-map-pin"></i>
-        <input type="text" id="from" placeholder="예: 김포공항역" value="김포공항역" autocomplete="off">
+        <input type="text" id="from" placeholder="예: 신일아파트" value="신일아파트" autocomplete="off">
       </div>
     </div>
     <div class="field">
@@ -211,6 +211,7 @@ function nowMinutes() { const n=new Date(); return n.getHours()*60+n.getMinutes(
 function toTimeStr(m) { return `${String(Math.floor(m/60)%24).padStart(2,"0")}:${String(m%60).padStart(2,"0")}`; }
 
 async function searchStation(name) {
+  if (name === "신일아파트") return { x: 126.622515, y: 37.68065, name: "신일아파트" };
   const cleanName = name.replace(/역$/, "");
   const url = `https://api.odsay.com/v1/api/searchStation?apiKey=${encodeURIComponent(ODSAY_KEY)}&stationName=${encodeURIComponent(cleanName)}&stationClass=2&lang=0`;
   const data = await fetch(url).then(r => r.json());
