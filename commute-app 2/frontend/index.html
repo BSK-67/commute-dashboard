@@ -209,9 +209,10 @@ function nowMinutes() { const n=new Date(); return n.getHours()*60+n.getMinutes(
 function toTimeStr(m) { return `${String(Math.floor(m/60)%24).padStart(2,"0")}:${String(m%60).padStart(2,"0")}`; }
 
 async function searchStation(name) {
-  const url = `https://api.odsay.com/v1/api/searchStation?apiKey=${encodeURIComponent(ODSAY_KEY)}&stationName=${encodeURIComponent(name)}&stationClass=2&lang=0`;
+  const cleanName = name.replace(/역$/, "");
+  const url = `https://api.odsay.com/v1/api/searchStation?apiKey=${encodeURIComponent(ODSAY_KEY)}&stationName=${encodeURIComponent(cleanName)}&stationClass=2&lang=0`;
   const data = await fetch(url).then(r => r.json());
-  if (data.error) throw new Error(`역 검색 실패: ${name}`);
+  if (data.error || !data.result?.station?.length) throw new Error(`역 검색 실패: ${name}`);
   const s = data.result.station[0];
   return { x: s.x, y: s.y, name: s.stationName };
 }
