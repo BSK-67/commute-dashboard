@@ -247,14 +247,14 @@ function buildTimeline(path, arriveTimeStr, bufferMin) {
       steps.push({ type:"walk", time:toTimeStr(currentM), label:"도보 이동",
         detail:`${sp.startName||"출발"} → ${sp.endName||"도착"}`, duration, badge:`도보 ${duration}분` });
     } else if (t === 1) {
-      const lane = sp.lane[0];
+      const lane = sp.lane?.[0] || {};
       const lineName = lane.name || "지하철";
       steps.push({ type:"subway", time:toTimeStr(currentM), label:`${lineName} 탑승`,
         detail:`${sp.startName} → ${sp.endName} (${sp.stationCount}정거장)`,
         duration, badge:lineName, color:LINE_COLORS[String(lane.subwayCode||"")]||"#888",
         realtimeStation: sp.startName });
     } else if (t === 2 || t === 3) {
-      const busNo = sp.lane[0].busNo || "버스";
+      const busNo = sp.lane?.[0]?.busNo || "버스";
       steps.push({ type:"bus", time:toTimeStr(currentM), label:`${busNo}번 버스 탑승`,
         detail:`${sp.startName} → ${sp.endName} (${sp.stationCount}정거장)`,
         duration, badge:`${busNo}번` });
