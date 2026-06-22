@@ -4,235 +4,125 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 <title>출근 경로 안내</title>
-
-<!-- PWA -->
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#185FA5">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="출근경로">
 <link rel="apple-touch-icon" href="/icons/icon-192.png">
-
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.5.0/dist/tabler-icons.min.css">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --bg: #f5f5f3;
-    --surface: #ffffff;
-    --border: rgba(0,0,0,0.1);
-    --text: #1a1a1a;
-    --muted: #6b6b68;
-    --hint: #9a9a96;
-    --blue: #185FA5;
-    --blue-bg: #E6F1FB;
-    --blue-text: #0C447C;
-    --green: #3B6D11;
-    --green-bg: #EAF3DE;
-    --amber-bg: #FAEEDA;
-    --amber-text: #854F0B;
-    --red-bg: #FCEBEB;
-    --red-text: #A32D2D;
-    --gray-bg: #F1EFE8;
-    --radius: 12px;
-    --radius-sm: 8px;
-    --safe-top: env(safe-area-inset-top);
-    --safe-bot: env(safe-area-inset-bottom);
+    --bg: #f5f5f3; --surface: #ffffff; --border: rgba(0,0,0,0.1);
+    --text: #1a1a1a; --muted: #6b6b68; --hint: #9a9a96;
+    --blue: #185FA5; --blue-bg: #E6F1FB; --blue-text: #0C447C;
+    --green: #3B6D11; --green-bg: #EAF3DE;
+    --amber-bg: #FAEEDA; --amber-text: #854F0B;
+    --red-bg: #FCEBEB; --red-text: #A32D2D; --gray-bg: #F1EFE8;
+    --radius: 12px; --radius-sm: 8px;
+    --safe-top: env(safe-area-inset-top); --safe-bot: env(safe-area-inset-bottom);
   }
-
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding-bottom: calc(2rem + var(--safe-bot));
+    font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
+    background: var(--bg); color: var(--text);
+    min-height: 100vh; padding-bottom: calc(2rem + var(--safe-bot));
     -webkit-tap-highlight-color: transparent;
   }
-
   .app { max-width: 420px; margin: 0 auto; }
-
   .header {
-    background: var(--surface);
-    padding: calc(1.25rem + var(--safe-top)) 1.25rem 1rem;
-    border-bottom: 0.5px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    background: var(--surface); padding: calc(1.25rem + var(--safe-top)) 1.25rem 1rem;
+    border-bottom: 0.5px solid var(--border); position: sticky; top: 0; z-index: 10;
   }
   .header-title { font-size: 17px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
   .header-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
-
   .form-card {
-    background: var(--surface);
-    margin: 12px 12px 0;
-    border-radius: var(--radius);
-    padding: 1.25rem;
-    border: 0.5px solid var(--border);
+    background: var(--surface); margin: 12px 12px 0;
+    border-radius: var(--radius); padding: 1.25rem; border: 0.5px solid var(--border);
   }
-
   .field + .field { margin-top: 12px; }
-  .field-label { font-size: 12px; color: var(--muted); margin-bottom: 5px; font-weight: 500; letter-spacing: 0.02em; }
-
+  .field-label { font-size: 12px; color: var(--muted); margin-bottom: 5px; font-weight: 500; }
   .input-wrap { position: relative; }
   .input-wrap i { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); font-size: 17px; color: var(--hint); pointer-events: none; }
   .input-wrap input {
     width: 100%; height: 44px; border: 0.5px solid var(--border);
     border-radius: var(--radius-sm); padding: 0 12px 0 36px;
     font-size: 16px; color: var(--text); background: var(--bg);
-    outline: none; transition: border-color 0.15s;
-    -webkit-appearance: none;
+    outline: none; -webkit-appearance: none;
   }
   .input-wrap input:focus { border-color: var(--blue); background: var(--surface); }
-
   .time-row { display: flex; gap: 10px; align-items: flex-end; }
   .time-row .field { flex: 1; }
-
   .time-input {
     width: 100%; height: 44px; border: 0.5px solid var(--border);
     border-radius: var(--radius-sm); padding: 0 12px;
     font-size: 16px; color: var(--text); background: var(--bg);
     outline: none; -webkit-appearance: none;
   }
-  .time-input:focus { border-color: var(--blue); background: var(--surface); }
-
   .buffer-select {
-    height: 44px; border: 0.5px solid var(--border);
-    border-radius: var(--radius-sm); padding: 0 10px;
-    font-size: 14px; color: var(--text); background: var(--bg);
+    height: 44px; border: 0.5px solid var(--border); border-radius: var(--radius-sm);
+    padding: 0 10px; font-size: 14px; color: var(--text); background: var(--bg);
     outline: none; width: 100px; -webkit-appearance: none;
   }
-
   .calc-btn {
-    width: 100%; height: 52px; margin-top: 16px;
-    background: var(--blue); color: #fff;
-    border: none; border-radius: var(--radius-sm);
-    font-size: 16px; font-weight: 600; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    -webkit-tap-highlight-color: transparent;
+    width: 100%; height: 52px; margin-top: 16px; background: var(--blue); color: #fff;
+    border: none; border-radius: var(--radius-sm); font-size: 16px; font-weight: 600;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
     transition: opacity 0.15s;
   }
   .calc-btn:active { opacity: 0.8; }
   .calc-btn:disabled { opacity: 0.5; }
-
   .depart-card {
-    margin: 12px 12px 0;
-    background: var(--amber-bg);
-    border-radius: var(--radius);
-    padding: 1.1rem 1.25rem;
-    border: 0.5px solid #FAC775;
+    margin: 12px 12px 0; background: var(--amber-bg); border-radius: var(--radius);
+    padding: 1.1rem 1.25rem; border: 0.5px solid #FAC775;
     display: flex; align-items: center; gap: 16px;
   }
-  .depart-time { font-size: 36px; font-weight: 700; letter-spacing: -1px; color: var(--text); }
+  .depart-time { font-size: 36px; font-weight: 700; letter-spacing: -1px; }
   .depart-label { font-size: 12px; color: var(--muted); margin-bottom: 2px; }
   .depart-countdown { font-size: 13px; font-weight: 600; color: var(--amber-text); margin-top: 3px; }
-
   .summary-row { display: flex; gap: 8px; margin: 10px 12px 0; }
   .sum-pill { flex: 1; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 10px; text-align: center; }
   .sum-val { font-size: 17px; font-weight: 600; }
   .sum-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
-
-  .timeline-card {
-    margin: 10px 12px 0;
-    background: var(--surface);
-    border-radius: var(--radius);
-    border: 0.5px solid var(--border);
-    overflow: hidden;
-  }
+  .timeline-card { margin: 10px 12px 0; background: var(--surface); border-radius: var(--radius); border: 0.5px solid var(--border); overflow: hidden; }
   .tl-header { padding: 12px 16px; border-bottom: 0.5px solid var(--border); font-size: 13px; font-weight: 600; color: var(--muted); }
-
   .tl-item { display: flex; padding: 0 16px; }
   .tl-left { display: flex; flex-direction: column; align-items: center; width: 44px; flex-shrink: 0; }
-  .tl-dot {
-    width: 14px; height: 14px; border-radius: 50%;
-    flex-shrink: 0; margin-top: 16px; z-index: 1;
-    border: 2.5px solid var(--surface);
-    box-shadow: 0 0 0 2px currentColor;
-  }
-  .tl-dot.walk    { color: #888; background: #888; }
-  .tl-dot.bus     { color: var(--blue); background: var(--blue); }
-  .tl-dot.subway  { color: var(--green); background: var(--green); }
-  .tl-dot.arrive  { color: #D85A30; background: #D85A30; }
-
+  .tl-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; margin-top: 16px; z-index: 1; border: 2.5px solid var(--surface); box-shadow: 0 0 0 2px currentColor; }
+  .tl-dot.walk   { color: #888; background: #888; }
+  .tl-dot.bus    { color: var(--blue); background: var(--blue); }
+  .tl-dot.subway { color: var(--green); background: var(--green); }
+  .tl-dot.arrive { color: #D85A30; background: #D85A30; }
   .tl-line { flex: 1; width: 2px; margin: 2px 0; }
   .tl-line.walk   { background: repeating-linear-gradient(to bottom,#bbb 0,#bbb 4px,transparent 4px,transparent 8px); }
   .tl-line.bus    { background: var(--blue); }
   .tl-line.subway { background: var(--green); }
   .tl-line.none   { background: transparent; }
-
   .tl-body { flex: 1; padding: 12px 0 12px 14px; border-bottom: 0.5px solid var(--border); }
   .tl-item:last-child .tl-body { border-bottom: none; }
-  .tl-time { font-size: 13px; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
-  .tl-name { font-size: 15px; color: var(--text); margin-top: 2px; font-weight: 500; }
+  .tl-time { font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .tl-name { font-size: 15px; margin-top: 2px; font-weight: 500; }
   .tl-detail { font-size: 13px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
-
-  .badge {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-size: 11px; font-weight: 600; padding: 3px 9px;
-    border-radius: 99px; margin-top: 6px;
-  }
+  .badge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; margin-top: 6px; }
   .badge.subway { background: var(--green-bg); color: var(--green); }
   .badge.bus    { background: var(--blue-bg); color: var(--blue-text); }
   .badge.walk   { background: var(--gray-bg); color: #5F5E5A; }
-
-  .realtime-box {
-    margin-top: 8px; background: var(--bg);
-    border-radius: var(--radius-sm); padding: 8px 10px; font-size: 12px;
-  }
+  .realtime-box { margin-top: 8px; background: var(--bg); border-radius: var(--radius-sm); padding: 8px 10px; font-size: 12px; }
   .realtime-title { color: var(--muted); margin-bottom: 5px; font-weight: 500; }
-  .realtime-item {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 3px 0; border-bottom: 0.5px solid var(--border);
-  }
+  .realtime-item { display: flex; justify-content: space-between; padding: 3px 0; border-bottom: 0.5px solid var(--border); }
   .realtime-item:last-child { border-bottom: none; }
   .realtime-msg { color: var(--blue-text); font-weight: 600; }
-
-  .transfer-warn {
-    margin-top: 7px; padding: 7px 10px;
-    background: var(--red-bg); border-radius: var(--radius-sm);
-    font-size: 12px; color: var(--red-text);
-    display: flex; align-items: center; gap: 6px;
-  }
-
-  /* 홈 화면 추가 배너 (iOS Safari) */
-  .install-banner {
-    margin: 12px 12px 0;
-    background: var(--blue-bg);
-    border: 0.5px solid #b3d4f0;
-    border-radius: var(--radius);
-    padding: 12px 14px;
-    display: flex; align-items: center; gap: 10px;
-    font-size: 13px; color: var(--blue-text);
-  }
-  .install-banner i { font-size: 20px; flex-shrink: 0; }
-  .install-close { margin-left: auto; font-size: 18px; cursor: pointer; padding: 4px; }
-
   .hidden { display: none !important; }
   .loading { text-align: center; padding: 2rem; color: var(--muted); font-size: 14px; }
-  .error-msg {
-    margin: 12px; padding: 14px 16px;
-    background: var(--red-bg); border-radius: var(--radius);
-    color: var(--red-text); font-size: 14px;
-    border: 0.5px solid #F7C1C1;
-  }
+  .error-msg { margin: 12px; padding: 14px 16px; background: var(--red-bg); border-radius: var(--radius); color: var(--red-text); font-size: 14px; border: 0.5px solid #F7C1C1; }
   @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
 <div class="app">
-
   <div class="header">
-    <div class="header-title">
-      <i class="ti ti-train" style="font-size:20px;"></i>
-      출근 경로 안내
-    </div>
+    <div class="header-title"><i class="ti ti-train" style="font-size:20px;"></i> 출근 경로 안내</div>
     <div class="header-sub">목표 도착 시각 → 최적 출발 시각 역산</div>
-  </div>
-
-  <!-- iOS 홈 화면 추가 안내 배너 -->
-  <div class="install-banner hidden" id="install-banner">
-    <i class="ti ti-download"></i>
-    <span>Safari 하단 <b>공유 → 홈 화면에 추가</b>로 앱처럼 설치하세요</span>
-    <span class="install-close" onclick="dismissBanner()">✕</span>
   </div>
 
   <div class="form-card">
@@ -268,8 +158,7 @@
       </div>
     </div>
     <button class="calc-btn" id="calc-btn" onclick="fetchRoute()">
-      <i class="ti ti-route"></i>
-      출발 시각 계산하기
+      <i class="ti ti-route"></i> 출발 시각 계산하기
     </button>
   </div>
 
@@ -277,7 +166,6 @@
     <i class="ti ti-loader-2" style="font-size:28px; animation: spin 1s linear infinite;"></i>
     <div style="margin-top:8px;">경로 계산 중...</div>
   </div>
-
   <div id="error" class="error-msg hidden"></div>
 
   <div id="result" class="hidden">
@@ -293,54 +181,95 @@
         <div style="font-size:12px; color:var(--muted);" id="buffer-label"></div>
       </div>
     </div>
-
     <div class="summary-row">
       <div class="sum-pill"><div class="sum-val" id="s-transfer">-</div><div class="sum-lbl">환승</div></div>
       <div class="sum-pill"><div class="sum-val" id="s-walk">-</div><div class="sum-lbl">도보</div></div>
       <div class="sum-pill"><div class="sum-val" id="s-cost">-</div><div class="sum-lbl">요금</div></div>
     </div>
-
     <div class="timeline-card">
       <div class="tl-header">경로 타임라인</div>
       <div id="timeline"></div>
     </div>
   </div>
-
 </div>
 
 <script>
-// ── 배포 후 Railway URL로 변경 ──────────────────────────────
-const API_BASE = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-  ? "http://localhost:5000"
-  : "";   // 같은 도메인 배포 시 빈 문자열
+const ODSAY_KEY = "mTXJ4RrO4uXr6CAYlN+S3A";
+const API_BASE  = "";
 
-// ── iOS 홈 화면 추가 배너 ───────────────────────────────────
-const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-const isStandalone = window.navigator.standalone;
-if (isIOS && !isStandalone && !localStorage.getItem("banner-dismissed")) {
-  document.getElementById("install-banner").classList.remove("hidden");
-}
-function dismissBanner() {
-  document.getElementById("install-banner").classList.add("hidden");
-  localStorage.setItem("banner-dismissed", "1");
-}
+const LINE_COLORS = {
+  "1":"#0052A4","2":"#00A84D","3":"#EF7C1C","4":"#00A5DE",
+  "5":"#996CAC","6":"#CD7C2F","7":"#747F00","8":"#E6186C","9":"#BDB092"
+};
 
-// ── 서비스 워커 등록 ────────────────────────────────────────
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/sw.js");
-}
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js");
 
-// ── 유틸 ────────────────────────────────────────────────────
-function toMinutes(t) {
-  const [h, m] = t.split(":").map(Number);
-  return h * 60 + m;
-}
-function nowMinutes() {
-  const n = new Date();
-  return n.getHours() * 60 + n.getMinutes();
+function toMinutes(t) { const [h,m]=t.split(":").map(Number); return h*60+m; }
+function nowMinutes() { const n=new Date(); return n.getHours()*60+n.getMinutes(); }
+function toTimeStr(m) { return `${String(Math.floor(m/60)%24).padStart(2,"0")}:${String(m%60).padStart(2,"0")}`; }
+
+async function searchStation(name) {
+  const url = `https://api.odsay.com/v1/api/searchStation?apiKey=${encodeURIComponent(ODSAY_KEY)}&stationName=${encodeURIComponent(name)}&stationClass=2&lang=0`;
+  const data = await fetch(url).then(r => r.json());
+  if (data.error) throw new Error(`역 검색 실패: ${name}`);
+  const s = data.result.station[0];
+  return { x: s.x, y: s.y, name: s.stationName };
 }
 
-// ── 경로 조회 ───────────────────────────────────────────────
+async function getRoute(sx, sy, ex, ey) {
+  const url = `https://api.odsay.com/v1/api/searchPubTransPathT?apiKey=${encodeURIComponent(ODSAY_KEY)}&SX=${sx}&SY=${sy}&EX=${ex}&EY=${ey}&SearchType=0&lang=0`;
+  const data = await fetch(url).then(r => r.json());
+  if (data.error) throw new Error("경로 탐색 실패");
+  return data.result.path.sort((a,b) => a.info.totalTime - b.info.totalTime)[0];
+}
+
+async function getSubwayRealtime(station) {
+  try {
+    const data = await fetch(`${API_BASE}/api/subway/realtime?station=${encodeURIComponent(station)}`).then(r=>r.json());
+    return data.arrivals || [];
+  } catch { return []; }
+}
+
+function buildTimeline(path, arriveTimeStr, bufferMin) {
+  const info = path.info;
+  const totalMin = info.totalTime;
+  const arriveM  = toMinutes(arriveTimeStr);
+  const departM  = arriveM - totalMin - bufferMin;
+  let   currentM = departM;
+  const steps    = [];
+
+  for (const sp of path.subPath) {
+    const t        = sp.trafficType;
+    const duration = sp.sectionTime || 0;
+    if (t === 4) {
+      if (!duration) continue;
+      steps.push({ type:"walk", time:toTimeStr(currentM), label:"도보 이동",
+        detail:`${sp.startName||"출발"} → ${sp.endName||"도착"}`, duration, badge:`도보 ${duration}분` });
+    } else if (t === 1) {
+      const lane = sp.lane[0];
+      const lineName = lane.name || "지하철";
+      steps.push({ type:"subway", time:toTimeStr(currentM), label:`${lineName} 탑승`,
+        detail:`${sp.startName} → ${sp.endName} (${sp.stationCount}정거장)`,
+        duration, badge:lineName, color:LINE_COLORS[String(lane.subwayCode||"")]||"#888",
+        realtimeStation: sp.startName });
+    } else if (t === 2 || t === 3) {
+      const busNo = sp.lane[0].busNo || "버스";
+      steps.push({ type:"bus", time:toTimeStr(currentM), label:`${busNo}번 버스 탑승`,
+        detail:`${sp.startName} → ${sp.endName} (${sp.stationCount}정거장)`,
+        duration, badge:`${busNo}번` });
+    }
+    currentM += duration;
+  }
+  steps.push({ type:"arrive", time:toTimeStr(arriveM), label:"도착", detail:"목적지 도착" });
+  return {
+    departTime: toTimeStr(departM), arriveTime: arriveTimeStr,
+    totalMin: totalMin + bufferMin, routeMin: totalMin, bufferMin,
+    transferCount: info.transitCount,
+    walkMin: Math.floor((info.totalWalk||0) / 60),
+    cost: info.payment || 0, steps
+  };
+}
+
 async function fetchRoute() {
   const from       = document.getElementById("from").value.trim();
   const to         = document.getElementById("to").value.trim();
@@ -354,16 +283,19 @@ async function fetchRoute() {
   document.getElementById("loading").classList.remove("hidden");
 
   try {
-    const res = await fetch(`${API_BASE}/api/route`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ from, to, arriveTime, buffer }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "경로 탐색 실패");
-    renderResult(data);
+    const [origin, dest] = await Promise.all([searchStation(from), searchStation(to)]);
+    const path   = await getRoute(origin.x, origin.y, dest.x, dest.y);
+    const result = buildTimeline(path, arriveTime, buffer);
+
+    for (const step of result.steps) {
+      if (step.type === "subway" && step.realtimeStation) {
+        const arrivals = await getSubwayRealtime(step.realtimeStation);
+        if (arrivals.length) step.realtimeArrivals = arrivals.slice(0,3);
+      }
+    }
+    renderResult(result);
     document.getElementById("result").classList.remove("hidden");
-  } catch (e) {
+  } catch(e) {
     const el = document.getElementById("error");
     el.textContent = `⚠️ ${e.message}`;
     el.classList.remove("hidden");
@@ -373,7 +305,6 @@ async function fetchRoute() {
   }
 }
 
-// ── 결과 렌더링 ─────────────────────────────────────────────
 function renderResult(data) {
   document.getElementById("depart-time").textContent  = data.departTime;
   document.getElementById("total-min").textContent    = `${data.totalMin}분`;
@@ -383,54 +314,34 @@ function renderResult(data) {
   document.getElementById("s-cost").textContent       = data.cost ? `${data.cost.toLocaleString()}원` : "-";
 
   const diff = toMinutes(data.departTime) - nowMinutes();
-  let countdownText, cardBg;
-  if (diff < 0) {
-    countdownText = `⚠️ ${Math.abs(diff)}분 지연 — 다음 경로 확인 필요`;
-    cardBg = "#FCEBEB";
-  } else if (diff === 0) {
-    countdownText = "🚨 지금 바로 출발하세요!";
-    cardBg = "#FCEBEB";
-  } else {
-    countdownText = `⏱ ${diff}분 후 출발`;
-    cardBg = "var(--amber-bg)";
-  }
-  document.getElementById("countdown").textContent = countdownText;
-  document.getElementById("depart-card").style.background = cardBg;
+  document.getElementById("countdown").textContent = diff < 0 ? `⚠️ ${Math.abs(diff)}분 지연` : diff === 0 ? "🚨 지금 출발!" : `⏱ ${diff}분 후 출발`;
+  document.getElementById("depart-card").style.background = diff <= 0 ? "#FCEBEB" : "var(--amber-bg)";
 
   const tl = document.getElementById("timeline");
   tl.innerHTML = "";
-
   data.steps.forEach((step, i) => {
-    const isLast   = i === data.steps.length - 1;
-    const lineType = isLast ? "none" : (step.type === "walk" ? "walk" : step.type);
-    const lineH    = step.duration ? Math.max(28, step.duration * 2.5) : 28;
-
-    const badge = step.badge ? `<span class="badge ${step.type}">${step.badge}</span>` : "";
-
-    let realtimeHTML = "";
+    const isLast  = i === data.steps.length - 1;
+    const lineH   = step.duration ? Math.max(28, step.duration * 2.5) : 28;
+    const badge   = step.badge ? `<span class="badge ${step.type}">${step.badge}</span>` : "";
+    let rtHTML = "";
     if (step.realtimeArrivals?.length) {
       const rows = step.realtimeArrivals.map(a =>
-        `<div class="realtime-item">
-           <span>${a.direction || a.destination || a.busNo || ""}</span>
-           <span class="realtime-msg">${a.arrivalMsg}</span>
-         </div>`).join("");
-      realtimeHTML = `<div class="realtime-box">
-        <div class="realtime-title"><i class="ti ti-wifi" style="font-size:12px;"></i> 실시간 도착 정보</div>
-        ${rows}</div>`;
+        `<div class="realtime-item"><span>${a.direction||a.destination||""}</span><span class="realtime-msg">${a.arrivalMsg}</span></div>`
+      ).join("");
+      rtHTML = `<div class="realtime-box"><div class="realtime-title">실시간 도착</div>${rows}</div>`;
     }
-
     const item = document.createElement("div");
     item.className = "tl-item";
     item.innerHTML = `
       <div class="tl-left">
         <div class="tl-dot ${step.type}"></div>
-        ${!isLast ? `<div class="tl-line ${lineType}" style="min-height:${lineH}px;"></div>` : ""}
+        ${!isLast ? `<div class="tl-line ${step.type === "walk" ? "walk" : step.type}" style="min-height:${lineH}px;"></div>` : ""}
       </div>
       <div class="tl-body">
         <div class="tl-time">${step.time}</div>
         <div class="tl-name">${step.label}</div>
         <div class="tl-detail">${step.detail}</div>
-        ${badge}${realtimeHTML}
+        ${badge}${rtHTML}
       </div>`;
     tl.appendChild(item);
   });
