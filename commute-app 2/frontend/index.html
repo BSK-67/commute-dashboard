@@ -269,7 +269,7 @@ function buildTimeline(path, arriveTimeStr, bufferMin) {
   return {
     departTime: toTimeStr(departM), arriveTime: arriveTimeStr,
     totalMin: totalMin + bufferMin, routeMin: totalMin, bufferMin,
-    transferCount: info.transitCount,
+    transferCount: (info.busTransitCount || 0) + (info.subwayTransitCount || 0),
     walkMin: Math.floor((info.totalWalk||0) / 60),
     cost: info.payment || 0, steps
   };
