@@ -257,6 +257,7 @@ function buildTimeline(path, arriveTimeStr, bufferMin) {
         duration, badge:lineName, color:LINE_COLORS[String(lane.subwayCode||"")]||"#888",
         realtimeStation: sp.startName });
     } else if (t === 2 || t === 3) {
+      if (!sp.startName || !sp.endName) { currentM += duration; continue; }
       const busNo = sp.lane?.[0]?.busNo || "버스";
       steps.push({ type:"bus", time:toTimeStr(currentM), label:`${busNo}번 버스 탑승`,
         detail:`${sp.startName} → ${sp.endName} (${sp.stationCount}정거장)`,
